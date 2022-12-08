@@ -33,23 +33,57 @@ public class Source implements CProcess
 		name = n;
 		// put first event in list for initialization
 		list.add(this,0,drawRandomPoisson(0)); //target,type,time
+		list.add(this,1,drawRandomPoisson(0)); //target,type,time
+		list.add(this,2,drawRandomPoisson(0)); //target,type,time
 	}
 
 	// arrival of patients
         @Override
 	public void execute(int type, double tme)
 	{
-		// show arrival
-		System.out.println("Arrival at time = " + tme);
-		// give arrived product to queue
-		// new patient, need to add priority level to the creation
-		Product p = new Product();
-		p.stamp(tme,"Creation",name);
-		queue.giveProduct(p);
-		// generate duration
-		double duration = drawRandomPoisson(tme);
-		// Create a new event in the eventlist
-		list.add(this,0,tme+duration); //target,type,time
+		// A1
+		if(type==0) {
+			// show arrival
+			System.out.println("A1 Arrival at time = " + tme);
+			// give arrived product to queue
+			// new patient, need to add priority level to the creation
+			Product p = new Product(0);
+			p.stamp(tme, "Creation", name);
+			queue.giveProduct(p);
+			// generate duration
+			double duration = drawRandomPoisson(tme);
+			// Create a new event in the eventlist
+			list.add(this, 0, tme + duration); //target,type,time
+		}
+		// B
+		if(type==1) {
+			// show arrival
+			System.out.println("B Arrival at time = " + tme);
+			// give arrived product to queue
+			// new patient, need to add priority level to the creation
+			Product p = new Product(1);
+			p.stamp(tme, "Creation", name);
+			queue.giveProduct(p);
+			// generate duration
+			double duration = drawRandomPoisson(tme);
+			// Create a new event in the eventlist
+			list.add(this, 1, tme + duration); //target,type,time
+		}
+		// A2
+		if(type==2) {
+			// show arrival
+			System.out.println("A2 Arrival at time = " + tme);
+			// give arrived product to queue
+			// new patient, need to add priority level to the creation
+			Product p = new Product(2);
+			p.stamp(tme, "Creation", name);
+			queue.giveProduct(p);
+			// generate duration
+			double duration = drawRandomPoisson(tme);
+			// Create a new event in the eventlist
+			list.add(this, 2, tme + duration); //target,type,time
+		}
+
 	}
 
 	// Generate a random patient arrival time according to the time-varying Poisson process
