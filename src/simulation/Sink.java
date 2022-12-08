@@ -6,16 +6,16 @@ import java.util.ArrayList;
  *	@author Joel Karel
  *	@version %I%, %G%
  */
-public class Sink implements ProductAcceptor
+public class Sink implements PatientAcceptor
 {
-	/** All products are kept */
-	private ArrayList<Product> products;
-	/** All properties of products are kept */
+	/** All patients are kept */
+	private ArrayList<Patient> patients;
+	/** All properties of patients are kept */
 	private ArrayList<Integer> numbers;
 	private ArrayList<Double> times;
 	private ArrayList<String> events;
 	private ArrayList<String> stations;
-	/** Counter to number products */
+	/** Counter to number patients */
 	private int number;
 	/** Name of the sink */
 	private String name;
@@ -26,7 +26,7 @@ public class Sink implements ProductAcceptor
 	public Sink(String n)
 	{
 		name = n;
-		products = new ArrayList<>();
+		patients = new ArrayList<>();
 		numbers = new ArrayList<>();
 		times = new ArrayList<>();
 		events = new ArrayList<>();
@@ -35,14 +35,14 @@ public class Sink implements ProductAcceptor
 	}
 	
         @Override
-	public boolean giveProduct(Product p)
+	public boolean giveProduct(Patient p)
 	{
 		number++;
-		products.add(p);
+		patients.add(p);
 		// store stamps
 		ArrayList<Double> t = p.getTimes();
 		ArrayList<String> e = p.getEvents();
-		ArrayList<String> s = p.getStations();
+		ArrayList<String> s = p.getAmbulances();
 		for(int i=0;i<t.size();i++)
 		{
 			numbers.add(number);

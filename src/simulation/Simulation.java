@@ -6,13 +6,23 @@
 
 package simulation;
 
+import java.util.Arrays;
+
 public class Simulation {
 
     public CEventList list;
     public Queue queue;
     public Source source;
     public Sink sink;
-    public Machine mach;
+    public Ambulance mach;
+
+    public static final double[] hospitalLoc = {0,0};
+    public static final double[] station1 = {0, 10};
+    public static final double[] station2 = {8.66025404, 5};
+    public static final double[] station3 = {8.66025404, -5};
+    public static final double[] station4 = {0, -10};
+    public static final double[] station5 = {-8.66025404, -5};
+    public static final double[] station6 = {-8.66025404, 5};
 	
 
         /**
@@ -28,9 +38,45 @@ public class Simulation {
 	// A sink
 	Sink si = new Sink("Sink 1");
 	// A machine
-	Machine m = new Machine(q,si,l,"Machine 1");
+    int counter = 0;
+    for(int i=0;i<5;i++){
+        counter++;
+        String temp = "Ambulance "+counter;
+        Ambulance m = new Ambulance(q,si,l,temp,hospitalLoc);
+    }
+    for(int i=0;i<5;i++){
+        counter++;
+        String temp = "Ambulance "+counter;
+        Ambulance m = new Ambulance(q,si,l,temp,station1);
+    }
+    for(int i=0;i<5;i++){
+        counter++;
+        String temp = "Ambulance "+counter;
+        Ambulance m = new Ambulance(q,si,l,temp,station2);
+    }
+    for(int i=0;i<5;i++){
+        counter++;
+        String temp = "Ambulance "+counter;
+        Ambulance m = new Ambulance(q,si,l,temp,station3);
+    }
+    for(int i=0;i<5;i++){
+        counter++;
+        String temp = "Ambulance "+counter;
+        Ambulance m = new Ambulance(q,si,l,temp,station4);
+    }
+    for(int i=0;i<5;i++){
+        counter++;
+        String temp = "Ambulance "+counter;
+        Ambulance m = new Ambulance(q,si,l,temp,station5);
+    }
+    for(int i=0;i<5;i++){
+        counter++;
+        String temp = "Ambulance "+counter;
+        Ambulance m = new Ambulance(q,si,l,temp,station6);
+    }
 	// start the eventlist
-	l.start(2000); // 2000 is maximum time
+	l.start(100);// 2000 is maximum time
+
     }
     
 }

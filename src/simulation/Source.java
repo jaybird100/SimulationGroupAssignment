@@ -13,7 +13,7 @@ public class Source implements CProcess
 	/** Eventlist that will be requested to construct events */
 	private CEventList list;
 	/** Queue that buffers products for the machine */
-	private ProductAcceptor queue;
+	private PatientAcceptor queue;
 	/** Name of the source */
 	private String name;
 	/** Mean interarrival time */
@@ -26,7 +26,7 @@ public class Source implements CProcess
 	*	@param l	The eventlist that is requested to construct events
 	*	@param n	Name of object
 	*/
-	public Source(ProductAcceptor q,CEventList l,String n)
+	public Source(PatientAcceptor q, CEventList l, String n)
 	{
 		list = l;
 		queue = q;
@@ -44,10 +44,10 @@ public class Source implements CProcess
 		// A1
 		if(type==0) {
 			// show arrival
-			System.out.println("A1 Arrival at time = " + tme);
 			// give arrived product to queue
 			// new patient, need to add priority level to the creation
-			Product p = new Product(0);
+			Patient p = new Patient(0);
+			System.out.println("A1 Arrival at time = " + tme+ " Location: x: "+p.x+" y: "+p.y);
 			p.stamp(tme, "Creation", name);
 			queue.giveProduct(p);
 			// generate duration
@@ -58,10 +58,10 @@ public class Source implements CProcess
 		// B
 		if(type==1) {
 			// show arrival
-			System.out.println("B Arrival at time = " + tme);
 			// give arrived product to queue
 			// new patient, need to add priority level to the creation
-			Product p = new Product(1);
+			Patient p = new Patient(1);
+			System.out.println("B Arrival at time = " + tme+ " Location: x: "+p.x+" y: "+p.y);
 			p.stamp(tme, "Creation", name);
 			queue.giveProduct(p);
 			// generate duration
@@ -72,10 +72,11 @@ public class Source implements CProcess
 		// A2
 		if(type==2) {
 			// show arrival
-			System.out.println("A2 Arrival at time = " + tme);
 			// give arrived product to queue
 			// new patient, need to add priority level to the creation
-			Product p = new Product(2);
+			Patient p = new Patient(2);
+			System.out.println("A2 Arrival at time = " + tme+ " Location: x: "+p.x+" y: "+p.y);
+
 			p.stamp(tme, "Creation", name);
 			queue.giveProduct(p);
 			// generate duration
@@ -88,7 +89,7 @@ public class Source implements CProcess
 
 	// Generate a random patient arrival time according to the time-varying Poisson process
 	public double drawRandomPoisson(double t) {
-		// Rate of patient arrival (3 - 2 * sin((5 * (π + t)) / 6π))
+		// Rate of patient arrival
 		double lambda = 3 - 2 * Math.sin((5 * (Math.PI + t)) / (6 * Math.PI));
 		// Generate random number using Poisson distribution
 		return -Math.log(1 - rand.nextDouble()) / lambda;
