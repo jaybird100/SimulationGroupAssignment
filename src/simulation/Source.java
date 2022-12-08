@@ -1,4 +1,5 @@
 package simulation;
+import java.util.Random;
 
 /**
  *	A source of products
@@ -16,12 +17,8 @@ public class Source implements CProcess
 	/** Name of the source */
 	private String name;
 	/** Mean interarrival time */
-	private double meanArrTime;
-	/** Interarrival times (in case pre-specified) */
-	private double[] interarrivalTimes;
-	/** Interarrival time iterator */
-	private int interArrCnt;
 
+	private Random rand = new Random();
 	/**
 	*	Constructor, creates objects
 	*        Interarrival times are exponentially distributed with mean 33
@@ -34,85 +31,32 @@ public class Source implements CProcess
 		list = l;
 		queue = q;
 		name = n;
-		meanArrTime=33;
 		// put first event in list for initialization
-		list.add(this,0,drawRandomExponential(meanArrTime)); //target,type,time
+		list.add(this,0,drawRandomPoisson(0)); //target,type,time
 	}
 
-	/**
-	*	Constructor, creates objects
-	*        Interarrival times are exponentially distributed with specified mean
-	*	@param q	The receiver of the products
-	*	@param l	The eventlist that is requested to construct events
-	*	@param n	Name of object
-	*	@param m	Mean arrival time
-	*/
-	public Source(ProductAcceptor q,CEventList l,String n,double m)
-	{
-		list = l;
-		queue = q;
-		name = n;
-		meanArrTime=m;
-		// put first event in list for initialization
-		list.add(this,0,drawRandomExponential(meanArrTime)); //target,type,time
-	}
-
-	/**
-	*	Constructor, creates objects
-	*        Interarrival times are prespecified
-	*	@param q	The receiver of the products
-	*	@param l	The eventlist that is requested to construct events
-	*	@param n	Name of object
-	*	@param ia	interarrival times
-	*/
-	public Source(ProductAcceptor q,CEventList l,String n,double[] ia)
-	{
-		list = l;
-		queue = q;
-		name = n;
-		meanArrTime=-1;
-		interarrivalTimes=ia;
-		interArrCnt=0;
-		// put first event in list for initialization
-		list.add(this,0,interarrivalTimes[0]); //target,type,time
-	}
-	
+	// arrival of patients
         @Override
 	public void execute(int type, double tme)
 	{
 		// show arrival
 		System.out.println("Arrival at time = " + tme);
 		// give arrived product to queue
+		// new patient, need to add priority level to the creation
 		Product p = new Product();
 		p.stamp(tme,"Creation",name);
 		queue.giveProduct(p);
 		// generate duration
-		if(meanArrTime>0)
-		{
-			double duration = drawRandomExponential(meanArrTime);
-			// Create a new event in the eventlist
-			list.add(this,0,tme+duration); //target,type,time
-		}
-		else
-		{
-			interArrCnt++;
-			if(interarrivalTimes.length>interArrCnt)
-			{
-				list.add(this,0,tme+interarrivalTimes[interArrCnt]); //target,type,time
-			}
-			else
-			{
-				list.stop();
-			}
-		}
+		double duration = drawRandomPoisson(tme);
+		// Create a new event in the eventlist
+		list.add(this,0,tme+duration); //target,type,time
 	}
-	
-	public static double drawRandomExponential(double mean)
-	{
-		// draw a [0,1] uniform distributed number
-		double u = Math.random();
-		// Convert it into a exponentially distributed random variate with mean 33
-		double res = -mean*Math.log(u);
-		return res;
+
+	// Generate a random patient arrival time according to the time-varying Poisson process
+	public double drawRandomPoisson(double t) {
+		// Rate of patient arrival (3 - 2 * sin((5 * (π + t)) / 6π))
+		double lambda = 3 - 2 * Math.sin((5 * (Math.PI + t)) / (6 * Math.PI));
+		// Generate random number using Poisson distribution
+		return -Math.log(1 - rand.nextDouble()) / lambda;
 	}
 }
