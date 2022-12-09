@@ -6,6 +6,9 @@
 
 package simulation;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Arrays;
 
 public class Simulation {
@@ -78,7 +81,28 @@ public class Simulation {
 	l.start(72);
     System.out.println(Arrays.toString(Patient.allX.toArray()));
     System.out.println(Arrays.toString(Patient.allY.toArray()));
+        toCSV(si);
+    }
 
+    public static void toCSV(Sink si){
+        System.out.println(System.getProperty("user.dir")+" "+si.getEvents().length+" "+si.getTimes().length+" "+
+                si.getNumbers().length+" "+si.getStations().length);
+
+        File file=new File(System.getProperty("user.dir")+"\\src\\Log.csv");
+
+        try {
+
+            FileWriter outputfile = new FileWriter(file);
+            outputfile.write("Event,Time,Numbers,Station\n");
+            for(int i=0;i<si.getEvents().length;i++){
+                outputfile.write(si.getEvents()[i]+","+si.getTimes()[i]+","+
+                        si.getNumbers()[i]+","+si.getStations()[i]+"\n");
+            }
+            outputfile.close();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     
 }
