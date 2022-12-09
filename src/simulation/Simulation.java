@@ -93,10 +93,11 @@ public class Simulation {
         try {
 
             FileWriter outputfile = new FileWriter(file);
-            outputfile.write("Event,Time,Numbers,Station,type\n");
+            outputfile.write("Event,Time,Numbers,Station,type,location\n");
             for(int i=0;i<si.getEvents().length;i++){
                 outputfile.write(si.getEvents()[i]+","+si.getTimes()[i]+","+
-                        si.getNumbers()[i]+","+si.getStations()[i]+","+si.types.get(i)+"\n");
+                        si.getNumbers()[i]+","+si.getStations()[i]+","+si.types.get(i)+
+                        ","+Arrays.toString(si.coord.get(i))+"\n");
             }
             outputfile.close();
         }

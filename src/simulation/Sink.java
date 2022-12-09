@@ -1,5 +1,6 @@
 package simulation;
 
+import java.sql.Array;
 import java.util.ArrayList;
 /**
  *	A sink
@@ -16,6 +17,7 @@ public class Sink implements PatientAcceptor
 	private ArrayList<String> events;
 	private ArrayList<String> stations;
 	public ArrayList<Integer>types;
+	public ArrayList<double[]>coord;
 	/** Counter to number patients */
 	private int number;
 	/** Name of the sink */
@@ -33,6 +35,7 @@ public class Sink implements PatientAcceptor
 		events = new ArrayList<>();
 		stations = new ArrayList<>();
 		types=new ArrayList<>();
+		coord=new ArrayList<>();
 		number = 0;
 	}
 	
@@ -45,6 +48,7 @@ public class Sink implements PatientAcceptor
 		ArrayList<Double> t = p.getTimes();
 		ArrayList<String> e = p.getEvents();
 		ArrayList<String> s = p.getAmbulances();
+		ArrayList<double[]>d=p.locations;
 		for(int i=0;i<t.size();i++)
 		{
 			numbers.add(number);
@@ -52,16 +56,18 @@ public class Sink implements PatientAcceptor
 			events.add(e.get(i));
 			stations.add(s.get(i));
 			types.add(p.type);
+			coord.add(d.get(i));
 		}
 		return true;
 	}
 
-	public boolean crewChangeStamp(double time,String station, int type){
+	public boolean crewChangeStamp(double time,String station, int type,double[] c){
 		numbers.add(0);
 		times.add(time);
 		stations.add(station);
 		events.add("Crew Change");
 		types.add(type);
+		coord.add(c);
 		return true;
 	}
 	

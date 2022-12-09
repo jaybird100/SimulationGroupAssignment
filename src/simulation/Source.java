@@ -48,7 +48,7 @@ public class Source implements CProcess
 			// new patient, need to add priority level to the creation
 			Patient p = new Patient(0,tme);
 			System.out.println("A1 Arrival at time = " + tme+ " Location: x: "+p.x+" y: "+p.y);
-			p.stamp(tme, "Creation", name);
+			p.stamp(tme, "Creation", name,new double[]{p.x,p.y});
 			queue.giveProduct(p);
 			// generate duration
 			double duration = drawRandomPoisson(tme);
@@ -62,7 +62,7 @@ public class Source implements CProcess
 			// new patient, need to add priority level to the creation
 			Patient p = new Patient(1,tme);
 			System.out.println("B Arrival at time = " + tme+ " Location: x: "+p.x+" y: "+p.y);
-			p.stamp(tme, "Creation", name);
+			p.stamp(tme, "Creation", name,new double[]{p.x,p.y});
 			queue.giveProduct(p);
 			// generate duration
 			double duration = drawRandomPoisson(tme);
@@ -77,7 +77,7 @@ public class Source implements CProcess
 			Patient p = new Patient(2,tme);
 			System.out.println("A2 Arrival at time = " + tme+ " Location: x: "+p.x+" y: "+p.y);
 
-			p.stamp(tme, "Creation", name);
+			p.stamp(tme, "Creation", name,new double[]{p.x,p.y});
 			queue.giveProduct(p);
 			// generate duration
 			double duration = drawRandomPoisson(tme);

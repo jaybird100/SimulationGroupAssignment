@@ -16,6 +16,7 @@ class Patient
 	//
 	private ArrayList<String> events;
 	private ArrayList<String> ambulances;
+	public ArrayList<double[]>locations;
 
 	public double x;
 	public double y;
@@ -38,6 +39,7 @@ class Patient
 		times = new ArrayList<>();
 		events = new ArrayList<>();
 		ambulances = new ArrayList<>();
+		locations=new ArrayList<>();
 		type = t;
 		setLocation();
 		timeBirthed=tme;
@@ -46,11 +48,12 @@ class Patient
 	}
 	
 	
-	public void stamp(double time,String event,String station)
+	public void stamp(double time,String event,String station,double[] loc)
 	{
 		times.add(time);
 		events.add(event);
 		ambulances.add(station);
+		locations.add(loc);
 	}
 	
 	public ArrayList<Double> getTimes()

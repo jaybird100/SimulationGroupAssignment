@@ -80,7 +80,7 @@ public class Ambulance implements CProcess, PatientAcceptor
 			// show arrival
 			System.out.println(name+": "+patient.type+" Patient finished at time = " + tme+"  Time elapsed: "+((tme-patient.timeBirthed)*60)+" minutes");
 			// Remove patient from system
-			patient.stamp(tme, "Production complete", name);
+			patient.stamp(tme, "Production complete", name,Simulation.hospitalLoc);
 			sink.giveProduct(patient);
 			patient = null;
 			// set machine status to idle
@@ -149,7 +149,7 @@ public class Ambulance implements CProcess, PatientAcceptor
 		double duration = manhattanDistance(getLocation()[0],getLocation()[1],homeDockingStation);
 		double tme = eventlist.getTime();
 		status='b';
-		((Sink)sink).crewChangeStamp(tme+duration,name,3);
+		((Sink)sink).crewChangeStamp(tme+duration,name,3,getLocation());
 		eventlist.add(this,3,tme+duration);
 
 	}
@@ -176,7 +176,7 @@ public class Ambulance implements CProcess, PatientAcceptor
 			// accept the patient
 			patient =p;
 			// mark starting time
-			patient.stamp(eventlist.getTime(),"Production started",name);
+			patient.stamp(eventlist.getTime(),"Production started",name,getLocation());
 			// start production
 			startProduction();
 			// Flag that the patient has arrived
@@ -200,12 +200,12 @@ public class Ambulance implements CProcess, PatientAcceptor
 		if(driving){
 			driving=false;
 		}
-		double duration = manhattanDistance(location[0], location[1], patient.x, patient.y);
+		double duration = manhattanDistance(location[0], location[1], patient.x, patient.y);//distance from ambulance to patient
 		double tme = eventlist.getTime();
-		duration+=calculateProcessingTime();
-		duration+= manhattanDistance(patient.x,patient.y,Simulation.hospitalLoc);
-		patient.stamp(tme+duration,"Ambulance at Patient",name);
-		patient.stamp(duration+tme,"Patient Processed",name);
+		patient.stamp(tme+duration,"Ambulance at Patient",name,getLocation());
+		duration+=calculateProcessingTime();//duration of travel to paitient and processing time
+		patient.stamp(duration+tme,"Patient Processed",name,getLocation());
+		duration+= manhattanDistance(patient.x,patient.y,Simulation.hospitalLoc);//duaration of travel to, processing , and to hospital
 		eventlist.add(this,0,tme+duration);
 		System.out.println(this.name+" ("+location[0]+", "+location[1]+") going to patient ("+patient.x+", "+patient.y+") Minutes since birth: "+((tme-patient.timeBirthed)*60)+" minutes");
 		status='b';
