@@ -17,12 +17,12 @@ public class Simulation {
     public Ambulance mach;
 
     public static final double[] hospitalLoc = {0,0};
-    public static final double[] station1 = {0, 10};
-    public static final double[] station2 = {8.66025404, 5};
-    public static final double[] station3 = {8.66025404, -5};
-    public static final double[] station4 = {0, -10};
-    public static final double[] station5 = {-8.66025404, -5};
-    public static final double[] station6 = {-8.66025404, 5};
+    public static final double[] station1 = {0, 8.6602540378444};
+    public static final double[] station2 = {7.4983802049147, 4.3301270189222};
+    public static final double[] station3 =  {7.4983802049147, -4.3301270189222};
+    public static final double[] station4 = {0, -8.6602540378444};
+    public static final double[] station5 = {-7.4983802049147, -4.3301270189222};
+    public static final double[] station6 = {-7.4983802049147,  4.330127018922};
 	
 
         /**

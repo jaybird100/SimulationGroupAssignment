@@ -104,7 +104,7 @@ public class Ambulance implements CProcess, PatientAcceptor
 			y = homeDockingStation[1];
 		}
 		if(type==2){
-			System.out.println(name+" CREW CHANGE 2: shift time: "+shiftTime+" current time: "+eventlist.getTime()%24);
+			//System.out.println(name+" CREW CHANGE 2: shift time: "+shiftTime+" current time: "+eventlist.getTime()%24);
 			// crew change
 			if(status=='i'){
 				crewChange();
@@ -116,7 +116,7 @@ public class Ambulance implements CProcess, PatientAcceptor
 		if(type==3){
 			x=homeDockingStation[0];
 			y=homeDockingStation[1];
-			System.out.println(name+" CREW CHANGE 3: shift time: "+shiftTime+" current time: "+eventlist.getTime()%24);
+		//	System.out.println(name+" CREW CHANGE 3: shift time: "+shiftTime+" current time: "+eventlist.getTime()%24);
 			double time= eventlist.getTime()%24;
 			if (time>=shiftTime){
 

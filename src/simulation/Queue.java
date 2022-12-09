@@ -105,7 +105,7 @@ public class Queue implements PatientAcceptor
 				// if the patient has the same type as the sorted patient, insert the patient based on the distance
 				else if (patient.type == sortedPatient.type)
 				{
-					if (distance < Ambulance.manhattanDistance(ambulance.x, ambulance.y, sortedPatient.x, sortedPatient.y))
+					if (distance < Ambulance.manhattanDistance(ambulance.getLocation()[0], ambulance.getLocation()[1], sortedPatient.x, sortedPatient.y))
 					{
 						break;
 					}
@@ -126,13 +126,13 @@ public class Queue implements PatientAcceptor
 		for (Ambulance ambulance : requests)
 		{
 			// calculate the Manhattan distance between the patient and the ambulance
-			double distance = Ambulance.manhattanDistance(patient.x, patient.y, ambulance.x, ambulance.y);
+			double distance = Ambulance.manhattanDistance(patient.x, patient.y, ambulance.getLocation()[0], ambulance.getLocation()[1]);
 
 			// insert the ambulance into the sorted requests at the appropriate position based on the distance
 			int index = 0;
 			for (Ambulance sortedAmbulance : sortedRequests)
 			{
-				if (distance < Ambulance.manhattanDistance(patient.x, patient.y, sortedAmbulance.x, sortedAmbulance.y))
+				if (distance < Ambulance.manhattanDistance(patient.x, patient.y, sortedAmbulance.getLocation()[0], sortedAmbulance.getLocation()[1]))
 				{
 					break;
 				}
