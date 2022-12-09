@@ -78,9 +78,9 @@ public class Simulation {
         Ambulance m = new Ambulance(q,si,l,temp,station6);
     }
 	// start the eventlist
-	l.start(72);
-    System.out.println(Arrays.toString(Patient.allX.toArray()));
-    System.out.println(Arrays.toString(Patient.allY.toArray()));
+	l.start(24);
+//    System.out.println(Arrays.toString(Patient.allX.toArray()));
+//    System.out.println(Arrays.toString(Patient.allY.toArray()));
         toCSV(si);
     }
 

@@ -55,6 +55,15 @@ public class Sink implements PatientAcceptor
 		}
 		return true;
 	}
+
+	public boolean crewChangeStamp(double time,String station, int type){
+		numbers.add(0);
+		times.add(time);
+		stations.add(station);
+		events.add("Crew Change");
+		types.add(type);
+		return true;
+	}
 	
 	public int[] getNumbers()
 	{

@@ -149,7 +149,9 @@ public class Ambulance implements CProcess, PatientAcceptor
 		double duration = manhattanDistance(getLocation()[0],getLocation()[1],homeDockingStation);
 		double tme = eventlist.getTime();
 		status='b';
+		((Sink)sink).crewChangeStamp(tme+duration,name,3);
 		eventlist.add(this,3,tme+duration);
+
 	}
 
 	// driving from hospital to docking station
