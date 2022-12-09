@@ -35,15 +35,12 @@ public class Ambulance implements CProcess, PatientAcceptor
 
 	public double drivingDistance;
 
+	boolean needToChange = false;
+	double shiftTime;
 
-	// Location needs to be stored.
+	// how long should ambulances get as a warning before they change
+	final double timeToChange = (10.0/60);
 
-	// deal with crews switching out
-	// switching out crews would be a type of event
-	// look for the nearest docking station not at capacity
-	//
-	//
-	// seperate class for docking bays, location and capacity
 	/**
 	*	Constructor
 	*        Service times are exponentially distributed with mean 30
@@ -66,6 +63,8 @@ public class Ambulance implements CProcess, PatientAcceptor
 		xDiff=homeDockingStation[0]-Simulation.hospitalLoc[0];
 		yDiff=homeDockingStation[1]-Simulation.hospitalLoc[1];
 		drivingDistance=manhattanDistance(Simulation.hospitalLoc,homeDockingStation);
+		eventlist.add(this, 2, eventlist.getTime() + (7-timeToChange));
+		shiftTime=7;
 	}
 
 
@@ -79,10 +78,7 @@ public class Ambulance implements CProcess, PatientAcceptor
 	{
 		if(type==0) {
 			// show arrival
-			System.out.println(name+": Patient finished at time = " + tme);
-			System.out.println(patient.type+" Patient starting location: x: "+patient.x+" y: "+patient.y);
-			System.out.println("Ambulance starting location: x: "+x+" y: "+y);
-			System.out.println("Manhattan distance: "+manhattanDistance(x,y,patient.x,patient.y));
+			System.out.println(name+": "+patient.type+" Patient finished at time = " + tme+"  Time elapsed: "+((tme-patient.timeBirthed)*60)+" minutes");
 			// Remove patient from system
 			patient.stamp(tme, "Production complete", name);
 			sink.giveProduct(patient);
@@ -95,13 +91,65 @@ public class Ambulance implements CProcess, PatientAcceptor
 				driving(tme);
 			}
 			// Ask the queue for products
-			queue.askProduct(this);
+			if(!needToChange) {
+				queue.askProduct(this);
+			}else{
+				crewChange();
+				needToChange=false;
+			}
 		}
 		if(type==1){
 			driving=false;
 			x = homeDockingStation[0];
 			y = homeDockingStation[1];
 		}
+		if(type==2){
+			System.out.println(name+" CREW CHANGE 2: shift time: "+shiftTime+" current time: "+eventlist.getTime()%24);
+			// crew change
+			if(status=='i'){
+				crewChange();
+			}else{
+				needToChange=true;
+			}
+		}
+		//finish crew change. Shift starts only at time set or after.
+		if(type==3){
+			x=homeDockingStation[0];
+			y=homeDockingStation[1];
+			System.out.println(name+" CREW CHANGE 3: shift time: "+shiftTime+" current time: "+eventlist.getTime()%24);
+			double time= eventlist.getTime()%24;
+			if (time>=shiftTime){
+
+				status='i';
+				if(shiftTime<=15){
+					if(Math.random()<0.25) {
+						eventlist.add(this, 2, eventlist.getTime() + ((4-timeToChange)-(time-shiftTime)));
+						shiftTime=(shiftTime+4)%24;
+					}else{
+						eventlist.add(this, 2, eventlist.getTime() + ((8-timeToChange)-(time-shiftTime)));
+						shiftTime=(shiftTime+8)%24;
+					}
+				}else{
+					if(shiftTime<=19){
+						eventlist.add(this, 2, eventlist.getTime() + (4-timeToChange)-(time-shiftTime));
+						shiftTime=(shiftTime+4)%24;
+					}else{
+						eventlist.add(this, 2, eventlist.getTime() + (8-timeToChange)-(time-shiftTime));
+						shiftTime=7;
+					}
+				}
+				queue.askProduct(this);
+			} else{
+				eventlist.add(this,3,tme+(shiftTime-time));
+			}
+		}
+	}
+
+	private void crewChange(){
+		double duration = manhattanDistance(getLocation()[0],getLocation()[1],homeDockingStation);
+		double tme = eventlist.getTime();
+		status='b';
+		eventlist.add(this,3,tme+duration);
 	}
 
 	// driving from hospital to docking station
@@ -144,23 +192,33 @@ public class Ambulance implements CProcess, PatientAcceptor
 	// 1. drive to patient. 2. process patient at scene. 3. drive to hospital. Calculate time and add to event list
 	private void startProduction()
 	{
-		// assuming static.
-		double duration = 0;
+		double[] location = getLocation();
+		x=location[0];
+		y=location[1];
+		if(driving){
+			driving=false;
+		}
+		double duration = manhattanDistance(location[0], location[1], patient.x, patient.y);
 		double tme = eventlist.getTime();
+		duration+=calculateProcessingTime();
+		duration+= manhattanDistance(patient.x,patient.y,Simulation.hospitalLoc);
+		eventlist.add(this,0,tme+duration);
+		System.out.println(this.name+" ("+location[0]+", "+location[1]+") going to patient ("+patient.x+", "+patient.y+") Minutes since birth: "+((tme-patient.timeBirthed)*60)+" minutes");
+		status='b';
+	}
+
+	public double[] getLocation(){
 		if(!driving) {
-			duration = manhattanDistance(x, y, patient.x, patient.y);
+			return new double[]{x,y};
 		}else{
+
+			double tme = eventlist.getTime();
 			double timeElapsed = tme - startOfDriving;
 			double percentage = timeElapsed/drivingDistance;
 			double newX = Simulation.hospitalLoc[0] + (xDiff * percentage);
 			double newY = Simulation.hospitalLoc[1] + (yDiff * percentage);
-			duration = manhattanDistance(newX, newY, patient.x, patient.y);
-			driving=false;
+			return new double[]{newX,newY};
 		}
-		duration+=calculateProcessingTime();
-		duration+= manhattanDistance(patient.x,patient.y,Simulation.hospitalLoc);
-		eventlist.add(this,0,tme+duration);
-		status='b';
 	}
 
 	public static double calculateProcessingTime()

@@ -15,7 +15,6 @@ class Patient
 	private ArrayList<Double> times;
 	//
 	private ArrayList<String> events;
-	// stations needs to be switched for 2 doubles for location.
 	private ArrayList<String> ambulances;
 
 	public double x;
@@ -26,18 +25,24 @@ class Patient
 	// 2 is a2
 	public int type;
 
+	public double timeBirthed;
 
 	/** 
 	*	Constructor for the product
 	*	Mark the time at which it is created
 	 */
-	public Patient(int t)
+	static ArrayList<Double> allX = new ArrayList<>();
+	static ArrayList<Double> allY = new ArrayList<>();
+	public Patient(int t, double tme)
 	{
 		times = new ArrayList<>();
 		events = new ArrayList<>();
 		ambulances = new ArrayList<>();
 		type = t;
 		setLocation();
+		timeBirthed=tme;
+		allX.add(x);
+		allY.add(y);
 	}
 	
 	
@@ -106,15 +111,14 @@ class Patient
 	}
 
 	private boolean isInsideStructure(double x, double y) {
-		double radius = 5.6568;
 		// Check if point is inside center hexagon
-		// checks the distance from origin (0,0), if less than radius then we know it's in the structure.
-		if (Math.sqrt(x*x + y*y) <= radius) {
+		// checks the distance from origin (0,0), if less than radius (radius is 5, but set at 6 to be safe) then we know it's in the structure.
+		if (Math.sqrt(x*x + y*y) <= 6) {
 			return true;
 		}
 
 		// Check if point is inside any of the outer hexagons
-		double[][] outerHexagonCenters = {{0, 10}, {8.66025404, 5}, {8.66025404, -5}, {0, -10}, {-8.66025404, -5}, {-8.66025404, 5}};
+		double[][] outerHexagonCenters = {{0, 8.6602540378444}, {7.4983802049147, 4.3301270189222}, {7.4983802049147, -4.3301270189222}, {0, -8.6602540378444}, {-7.4983802049147, -4.3301270189222}, {-7.4983802049147,  4.330127018922}};
 		for (double[] center : outerHexagonCenters) {
 			// calculate coordinates of each vertex of the hexagon centered at the current center
 			double[][] vertices = new double[6][2];

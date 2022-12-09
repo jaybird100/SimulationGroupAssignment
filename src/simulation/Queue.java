@@ -64,7 +64,7 @@ public class Queue implements PatientAcceptor
 	public boolean giveProduct(Patient p)
 	{
 		// Check if the machine accepts it
-		if(requests.size()<1 || p.type!=0)
+		if(requests.size()<1)
 			row.add(p); // Otherwise store it
 		else
 		{
@@ -91,7 +91,7 @@ public class Queue implements PatientAcceptor
 		for (Patient patient : row)
 		{
 			// calculate the Manhattan distance between the ambulance and the patient
-			double distance = Ambulance.manhattanDistance(ambulance.x, ambulance.y, patient.x, patient.y);
+			double distance = Ambulance.manhattanDistance(ambulance.getLocation()[0], ambulance.getLocation()[1], patient.x, patient.y);
 
 			// insert the patient into the sorted row at the appropriate position based on the type and distance
 			int index = 0;

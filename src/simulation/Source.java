@@ -46,7 +46,7 @@ public class Source implements CProcess
 			// show arrival
 			// give arrived product to queue
 			// new patient, need to add priority level to the creation
-			Patient p = new Patient(0);
+			Patient p = new Patient(0,tme);
 			System.out.println("A1 Arrival at time = " + tme+ " Location: x: "+p.x+" y: "+p.y);
 			p.stamp(tme, "Creation", name);
 			queue.giveProduct(p);
@@ -60,7 +60,7 @@ public class Source implements CProcess
 			// show arrival
 			// give arrived product to queue
 			// new patient, need to add priority level to the creation
-			Patient p = new Patient(1);
+			Patient p = new Patient(1,tme);
 			System.out.println("B Arrival at time = " + tme+ " Location: x: "+p.x+" y: "+p.y);
 			p.stamp(tme, "Creation", name);
 			queue.giveProduct(p);
@@ -74,7 +74,7 @@ public class Source implements CProcess
 			// show arrival
 			// give arrived product to queue
 			// new patient, need to add priority level to the creation
-			Patient p = new Patient(2);
+			Patient p = new Patient(2,tme);
 			System.out.println("A2 Arrival at time = " + tme+ " Location: x: "+p.x+" y: "+p.y);
 
 			p.stamp(tme, "Creation", name);

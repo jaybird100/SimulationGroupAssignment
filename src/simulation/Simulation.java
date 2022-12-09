@@ -75,7 +75,9 @@ public class Simulation {
         Ambulance m = new Ambulance(q,si,l,temp,station6);
     }
 	// start the eventlist
-	l.start(100);// 2000 is maximum time
+	l.start(72);
+    System.out.println(Arrays.toString(Patient.allX.toArray()));
+    System.out.println(Arrays.toString(Patient.allY.toArray()));
 
     }
     
