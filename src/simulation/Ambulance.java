@@ -204,6 +204,8 @@ public class Ambulance implements CProcess, PatientAcceptor
 		double tme = eventlist.getTime();
 		duration+=calculateProcessingTime();
 		duration+= manhattanDistance(patient.x,patient.y,Simulation.hospitalLoc);
+		patient.stamp(tme+duration,"Ambulance at Patient",name);
+		patient.stamp(duration+tme,"Patient Processed",name);
 		eventlist.add(this,0,tme+duration);
 		System.out.println(this.name+" ("+location[0]+", "+location[1]+") going to patient ("+patient.x+", "+patient.y+") Minutes since birth: "+((tme-patient.timeBirthed)*60)+" minutes");
 		status='b';
