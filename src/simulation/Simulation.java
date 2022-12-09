@@ -85,18 +85,18 @@ public class Simulation {
     }
 
     public static void toCSV(Sink si){
-        System.out.println(System.getProperty("user.dir")+" "+si.getEvents().length+" "+si.getTimes().length+" "+
-                si.getNumbers().length+" "+si.getStations().length);
+//        System.out.println(System.getProperty("user.dir")+" "+si.getEvents().length+" "+si.getTimes().length+" "+
+//                si.getNumbers().length+" "+si.getStations().length);
 
         File file=new File(System.getProperty("user.dir")+"\\src\\Log.csv");
 
         try {
 
             FileWriter outputfile = new FileWriter(file);
-            outputfile.write("Event,Time,Numbers,Station\n");
+            outputfile.write("Event,Time,Numbers,Station,type\n");
             for(int i=0;i<si.getEvents().length;i++){
                 outputfile.write(si.getEvents()[i]+","+si.getTimes()[i]+","+
-                        si.getNumbers()[i]+","+si.getStations()[i]+"\n");
+                        si.getNumbers()[i]+","+si.getStations()[i]+","+si.types.get(i)+"\n");
             }
             outputfile.close();
         }

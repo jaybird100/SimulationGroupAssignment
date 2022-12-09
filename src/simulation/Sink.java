@@ -15,6 +15,7 @@ public class Sink implements PatientAcceptor
 	private ArrayList<Double> times;
 	private ArrayList<String> events;
 	private ArrayList<String> stations;
+	public ArrayList<Integer>types;
 	/** Counter to number patients */
 	private int number;
 	/** Name of the sink */
@@ -31,6 +32,7 @@ public class Sink implements PatientAcceptor
 		times = new ArrayList<>();
 		events = new ArrayList<>();
 		stations = new ArrayList<>();
+		types=new ArrayList<>();
 		number = 0;
 	}
 	
@@ -49,6 +51,7 @@ public class Sink implements PatientAcceptor
 			times.add(t.get(i));
 			events.add(e.get(i));
 			stations.add(s.get(i));
+			types.add(p.type);
 		}
 		return true;
 	}
