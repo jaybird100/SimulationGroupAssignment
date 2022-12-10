@@ -71,7 +71,7 @@ end
 function [upper,lower]= confidenceInterval(d)
     
     n=length(d);
-    mu=sum(d)/n;
+    mu=sum(d)/n
     s= (sum((d-mu).^2)/(n-1))^(.5);
     upper=mu+(1.96)*(s/(n)^(.5));
     lower=mu-(1.96)*(s/(n)^(.5));
