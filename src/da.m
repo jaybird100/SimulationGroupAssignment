@@ -16,6 +16,7 @@ arrive=data(strcmp(data{:,1}, 'Ambulance at Patient') & (data{:,5}==0), 2);
 
 timeBeforePickup=arrive{:,1}-creation{:,1};
 a1WaitedMoreThanFifteen=length(timeBeforePickup(timeBeforePickup>0.25))
+percentageofA1=a1WaitedMoreThanFifteen/size(creation,1)
 [a1waitUpper,a1waitLower]=confidenceInterval(timeBeforePickup)
 
 shiftchanges=data(strcmp(data{:,1},'Crew Change'),[2,4])
