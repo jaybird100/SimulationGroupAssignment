@@ -15,11 +15,13 @@ creation=data(strcmp(data{:,1}, 'Creation') & (data{:,5}==0), 2);
 arrive=data(strcmp(data{:,1}, 'Ambulance at Patient') & (data{:,5}==0), 2);
 
 timeBeforePickup=arrive{:,1}-creation{:,1};
-a1WaitedMoreThanFifteen=length(timeBeforePickup(timeBeforePickup>0.25))
-percentageofA1=a1WaitedMoreThanFifteen/size(creation,1)
+a1WaitedMoreThanFifteen=timeBeforePickup(timeBeforePickup>0.25);
+[a1moreThanFifteenUpper, a1moreThanFifteenLower]=confidenceInterval(a1WaitedMoreThanFifteen)
+percentageofA1waitedMoreThanFifteen=length(a1WaitedMoreThanFifteen)/size(creation,1)
+
 [a1waitUpper,a1waitLower]=confidenceInterval(timeBeforePickup)
 
-shiftchanges=data(strcmp(data{:,1},'Crew Change'),[2,4])
+shiftchanges=data(strcmp(data{:,1},'Crew Change'),[2,4]);
 makeFig(shiftchanges,24)
 
 
@@ -45,7 +47,7 @@ function []=makeFig(sc,maxTime)
 
     sched=zeros(35,maxTime);
     for i=1:size(sc,1)
-        sched(cellfun(@str2num,sc{i,2}),sc{i,1})=sc{i,1};
+        sched(cellfun(@str2num,sc{i,2}),sc{i,1})=100;
     end
 
     figure
@@ -70,7 +72,7 @@ end
 
 function [upper,lower]= confidenceInterval(d)
     
-    n=length(d);
+    n=length(d)
     mu=sum(d)/n
     s= (sum((d-mu).^2)/(n-1))^(.5);
     upper=mu+(1.96)*(s/(n)^(.5));
